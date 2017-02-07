@@ -30,10 +30,15 @@ public class Main extends Application {
         primaryStage.sizeToScene();
 
 
+        /**
+         * new the chess
+         */
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 chess = new Chess(i, j);
                 chess.setSize(scene);
+                chess.changeColor();
+//                chess.changeColor(i, j);
             }
         }
         bp.setCenter(Chess.gp);
