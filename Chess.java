@@ -6,14 +6,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-
 
 import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
@@ -25,36 +22,41 @@ class Chess extends Back{
     static GridPane gp = new GridPane();
     private StackPane sp;
     private Rectangle chess;
-    private Judge judge;
-    private static boolean listener = false;
     private static final int WHITE = 0;                                                //0 is white  1 is red  2 is blue
     private static final int RED = 1;
     private static final int BLUE = 2;
     private DoubleProperty width = new SimpleDoubleProperty(40);
     private DoubleProperty height = new SimpleDoubleProperty(40);
-    private IntegerProperty color = new SimpleIntegerProperty(Back.color);
+    private IntegerProperty color = new SimpleIntegerProperty(-1);
     private static Integer red = 1, blue = 1;
     private Label num = new Label("1");
-
 
     /**
      * begin
      */
+
+    public Chess(){}
+
     public Chess(int i, int j) {
         chess = new Rectangle();
         sp = new StackPane();
-//        judge = new Judge();
         chess.heightProperty().bind(height);
         chess.widthProperty().bind(width);
         setColorandnumber(chess, i, j);
         gp.add(sp, i, j);
         gp.setStyle("-fx-grid-lines-visible:true");                    //line of rectangle
         sp.setOnMouseClicked(e -> {
-            if(Judge.getFromI() == -1 && Judge.getFromJ() == -1)  Judge.getFrom(i, j);
-            else if(Judge.getToI() == -1 && Judge.getToJ() == -1)  Judge.getTo(i, j);
+            if(Judge.getFromI() == -1 && Judge.getFromJ() == -1) {
+                tempnum = num;
+                tempchess = chess;
+                Judge.getFrom(i, j);
+                color.set(-1);
+            }
+            else if(Judge.getToI() == -1 && Judge.getToJ() == -1) {
+                Judge.getTo(i, j);
+            }
             if(Judge.move()){
-                listener = true;
-                color.set(board[toI][toJ]);
+                moveChange();
             }
         });
     }
@@ -74,25 +76,30 @@ class Chess extends Back{
         });
     }
 
+
     public void changeColor(){
-        if(listener) {
-            color.addListener(new ChangeListener<Number>() {
-                @Override
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                    if (color.get() == 1) {
-                        chess.fillProperty().set(Color.RED);
-                    }
-                    else if (color.get() == 2) {
-                        chess.fillProperty().set(Color.BLUE);
-                    }
-                    fromI = -1;
-                    fromJ = -1;
-                    toI = -1;
-                    toJ = -1;
-                    listener = false;
+        color.addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (color.get() == 1) {
+                    chess.fillProperty().set(Color.RED);
                 }
-            });
-        }
+                else if (color.get() == 2) {
+                    chess.fillProperty().set(Color.BLUE);
+                }
+                else if(color.get() == 0){
+                    chess.fillProperty().set(Color.WHITE);
+                }
+            }
+        });
+/*
+        num.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+            }
+        });
+*/
     }
 
     /**
@@ -102,7 +109,6 @@ class Chess extends Back{
         if(i < 3 && j < 3 - i){
             num.setText(red.toString());                                            //num label
             sp.getChildren().addAll(chess, num);
-            chess.fillProperty().setValue(Color.RED);
             board[i][j] = RED;
             number[i][j] = red;
             red++;
@@ -110,20 +116,30 @@ class Chess extends Back{
         else if(i >= 2 && j >= 4 - i + 2){
             num.setText(blue.toString());
             sp.getChildren().addAll(chess, num);
-            chess.fillProperty().setValue(Color.BLUE);
             board[i][j] = BLUE;
             number[i][j] = blue;
             blue++;
         }
         else {
-            sp.getChildren().addAll(chess);
-            chess.fillProperty().setValue(Color.WHITE);
+            num.setText("");
+            sp.getChildren().addAll(chess, num);
             board[i][j] = WHITE;
         }
     }
 
-    public void setC(){
-        color.set(Back.getColor());
-        log.print("set c success " + color);
+    public void moveChange(){
+        color.set(board[fromI][fromJ]);
+        num.setText(tempnum.getText());
+        tempnum.textProperty().set("");
+        tempchess.fillProperty().set(Color.WHITE);
+        setBoard();
+        fromI = -1;
+        fromJ = -1;
+        toI = -1;
+        toJ = -1;
+    }
+
+    public IntegerProperty getColor(){
+        return color;
     }
 }

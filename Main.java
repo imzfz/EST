@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -23,7 +24,8 @@ public class Main extends Application {
         BorderPane bp = new BorderPane();
         Scene scene = new Scene(bp, 300, 275);
         Chess chess;
-        Judge judge;
+        new Judge();
+        bp.setRight(Info.getArea());
         primaryStage.setTitle("EST");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -38,7 +40,7 @@ public class Main extends Application {
                 chess = new Chess(i, j);
                 chess.setSize(scene);
                 chess.changeColor();
-//                chess.changeColor(i, j);
+                chess.getColor().set(Chess.board[i][j]);
             }
         }
         bp.setCenter(Chess.gp);

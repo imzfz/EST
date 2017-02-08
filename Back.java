@@ -1,7 +1,10 @@
 package sample;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
 import java.lang.reflect.Field;
@@ -17,24 +20,18 @@ class Back {
     static int number[][] = new int [5][5];                                    //record number of chess
     static int turn = 1;                            //1 is red  2 is blue
     static int fromI = -1, fromJ = -1, toI = -1, toJ = -1;
-    static int color = -1;
+    static Label tempnum;
+    static Rectangle tempchess;
 
     public Back(){
 
     }
 
-    public static void setBoard(){
-        board[fromI][fromJ] = board[toI][toJ];
+    public void setBoard(){
+        board[toI][toJ] = board[fromI][fromJ];
+        number[toI][toJ] = number[fromI][fromJ];
+        board[fromI][fromJ] = 0;
+        number[fromI][fromJ] = 0;
     }
-
-    public static void setColor(int c){
-        color = c;
-        log.print("color = " + color);
-    }
-
-    public static int getColor(){
-        return color;
-    }
-
 
 }

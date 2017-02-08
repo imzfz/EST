@@ -1,10 +1,5 @@
 package sample;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.control.Label;
-import javafx.scene.shape.Rectangle;
-
 import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 /**
@@ -13,8 +8,9 @@ import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 class Judge extends Back{
 
     public Judge(){
-
+        new Info();
     }
+
 
     /**
      * 返回当前回合
@@ -23,12 +19,14 @@ class Judge extends Back{
         return turn;
     }
 
+
     /**
      * 改变回合
      */
     public static void setTurn(){
         turn = turn == 1 ? 2 : 1;
     }
+
 
     /**
      *获取from的信息
@@ -42,6 +40,7 @@ class Judge extends Back{
         return board[i][j];
     }
 
+
     /**
      *获取to的信息
      */
@@ -52,6 +51,7 @@ class Judge extends Back{
         return board[i][j];
     }
 
+
     /**
      * 判断是否可以移动 并且初始化from和to 交换turn
      */
@@ -61,10 +61,12 @@ class Judge extends Back{
             log.println("to: (" + toI + " " + toJ + ")");
             log.println("success!");
             setTurn();
+            Info.setInfo(getString());
             return true;
         }
         return false;
     }
+
 
     /**
      *判断是否在本回合获取了正确的from和to点坐标
@@ -76,7 +78,6 @@ class Judge extends Back{
 
         if (allRight) {
             if (conditionRed && whosTurn() == 1) {
-                log.print("set color success");
                 return true;
             }
 
@@ -92,8 +93,10 @@ class Judge extends Back{
                 toJ = -1;
             }
         }
+
         return false;
     }
+
 
     public static int getFromI() {
         return fromI;
@@ -109,5 +112,11 @@ class Judge extends Back{
 
     public static int getToJ() {
         return toJ;
+    }
+
+    public static String getString(){
+        String turn;
+        turn = whosTurn() == 1?"Blue":"Red";
+        return turn  + " (" + fromI + "," + fromJ + ") to " +  " (" + toI + "," + toJ + ")\n" + "=======\n";
     }
 }
