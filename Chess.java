@@ -22,13 +22,14 @@ class Chess extends Back{
     static GridPane gp = new GridPane();
     private StackPane sp;
     private Rectangle chess;
-    private static final int WHITE = 0;                                                //0 is white  1 is red  2 is blue
+    //0 is white  1 is red  2 is blue
+    private static final int WHITE = 0;
     private static final int RED = 1;
     private static final int BLUE = 2;
     private DoubleProperty width = new SimpleDoubleProperty(40);
     private DoubleProperty height = new SimpleDoubleProperty(40);
     private IntegerProperty color = new SimpleIntegerProperty(-1);
-    private static Integer red = 1, blue = 1;
+    static Integer red = 1, blue = 1;
     private Label num = new Label("1");
 
     /**
@@ -37,6 +38,9 @@ class Chess extends Back{
 
     public Chess(){}
 
+    /**
+     * 初始化棋盘，注册响应事件
+     */
     public Chess(int i, int j) {
         chess = new Rectangle();
         sp = new StackPane();
@@ -44,18 +48,20 @@ class Chess extends Back{
         chess.widthProperty().bind(width);
         setColorandnumber(chess, i, j);
         gp.add(sp, i, j);
-        gp.setStyle("-fx-grid-lines-visible:true");                    //line of rectangle
+        //line of rectangle
+        gp.setStyle("-fx-grid-lines-visible:true");
         sp.setOnMouseClicked(e -> {
-            if(Judge.getFromI() == -1 && Judge.getFromJ() == -1) {
+            //记录from的棋子信息
+            if(Judge.getFromI() == -1 && Judge.getFromJ() == -1 && !Judge.isFinished()) {
                 tempnum = num;
                 tempchess = chess;
                 Judge.getFrom(i, j);
                 color.set(-1);
             }
-            else if(Judge.getToI() == -1 && Judge.getToJ() == -1) {
+            else if(Judge.getToI() == -1 && Judge.getToJ() == -1 && !Judge.isFinished()) {
                 Judge.getTo(i, j);
             }
-            if(Judge.move()){
+            if(Judge.move() && !Judge.isFinished()){
                 moveChange();
             }
         });
@@ -64,7 +70,7 @@ class Chess extends Back{
 
 
     /**
-     * auto resize
+     * 调整大小
      */
     public void setSize(Scene s){
         s.widthProperty().addListener(new ChangeListener<Number>() {
@@ -103,7 +109,7 @@ class Chess extends Back{
     }
 
     /**
-     * set chess color&number at start
+     * 初始化棋子编号以及颜色
      */
     public void setColorandnumber(Rectangle chess, int i, int j){
         if(i < 3 && j < 3 - i){
@@ -127,12 +133,26 @@ class Chess extends Back{
         }
     }
 
+    /**
+     * 变更时候减少某个颜色的计数，实现棋子移动
+     */
     public void moveChange(){
+        if(board[toI][toJ] == 1){
+            red--;
+        }
+
+        if(board[toI][toJ] == 2){
+            blue--;
+        }
+
+        //改变数字填充，颜色填充，实现棋子移动
         color.set(board[fromI][fromJ]);
         num.setText(tempnum.getText());
         tempnum.textProperty().set("");
         tempchess.fillProperty().set(Color.WHITE);
+        //设置后端棋盘数据
         setBoard();
+        //设置from和to为初始值
         fromI = -1;
         fromJ = -1;
         toI = -1;

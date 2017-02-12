@@ -1,14 +1,8 @@
 package sample;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 

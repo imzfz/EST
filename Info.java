@@ -1,9 +1,6 @@
 package sample;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
 
@@ -15,8 +12,10 @@ import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 class Info{
     private static StackPane area = new StackPane();
     private static TextArea info = new TextArea();
-    private static String text = "";
 
+    /**
+     * 设置不可编辑、自动换行的信息显示区域
+     */
     public Info(){
         area.setPadding(new Insets(5,5,80,5));
         info.setPrefWidth(90);
@@ -25,12 +24,18 @@ class Info{
         area.getChildren().add(info);
     }
 
+    /**
+     * 添加显示区到主界面
+     */
     public static StackPane getArea(){
         return area;
     }
 
+
+    /**
+     * 添加说明信息到末尾
+     */
     public static void setInfo(String s){
-        text += s;
         info.appendText(s);
     }
 }

@@ -76,7 +76,7 @@ class Judge extends Back{
         boolean conditionBlue = (toI == fromI - 1 && (toJ == fromJ - 1 || toJ == fromJ)) || (toJ == fromJ - 1 && ((toI == fromI - 1 || toI == fromI)));
         boolean allRight = !(fromI == -1 || fromJ == -1 || toI == -1 || toJ == -1);
 
-        if (allRight) {
+        if (allRight && !isFinished()) {
             if (conditionRed && whosTurn() == 1) {
                 return true;
             }
@@ -93,7 +93,20 @@ class Judge extends Back{
                 toJ = -1;
             }
         }
+        return false;
+    }
 
+    /**
+     * 判断是否结束
+     */
+    public static boolean isFinished(){
+        if(board[4][4] == 1 || board[0][0] == 2){
+            return true;
+        }
+
+        if(Chess.red == 0 || Chess.blue == 0){
+            return true;
+        }
         return false;
     }
 
@@ -114,9 +127,12 @@ class Judge extends Back{
         return toJ;
     }
 
+    /**
+     * 获取每一步的信息组成字符串传递给显示区
+     */
     public static String getString(){
         String turn;
-        turn = whosTurn() == 1?"Blue":"Red";
+        turn = whosTurn() == 1 ? "Blue" : "Red";
         return turn  + " (" + fromI + "," + fromJ + ") to " +  " (" + toI + "," + toJ + ")\n" + "=======\n";
     }
 }
