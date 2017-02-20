@@ -24,6 +24,7 @@ class Info{
         area.getChildren().add(info);
     }
 
+
     /**
      * 添加显示区到主界面
      */

@@ -19,7 +19,9 @@ public class Main extends Application {
         Scene scene = new Scene(bp, 300, 275);
         Chess chess;
         new Judge();
+        new Roll();
         bp.setRight(Info.getArea());
+        bp.setBottom(Roll.hbox);
         primaryStage.setTitle("EST");
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -1,13 +1,9 @@
 package sample;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -19,24 +15,13 @@ import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
  * 棋盘和棋子的属性
  */
 class Chess extends Back{
-    static GridPane gp = new GridPane();
-    private StackPane sp;
-    private Rectangle chess;
-    //0 is white  1 is red  2 is blue
-    private static final int WHITE = 0;
-    private static final int RED = 1;
-    private static final int BLUE = 2;
-    private DoubleProperty width = new SimpleDoubleProperty(40);
-    private DoubleProperty height = new SimpleDoubleProperty(40);
-    private IntegerProperty color = new SimpleIntegerProperty(-1);
-    static Integer red = 1, blue = 1;
-    private Label num = new Label("1");
+
 
     /**
      * begin
      */
-
     public Chess(){}
+
 
     /**
      * 初始化棋盘，注册响应事件
